@@ -1,6 +1,5 @@
-/**
- * Fixes old Cloudinary PDF URLs stored as /image/upload/ → /raw/upload/
- */
+const API_BASE = import.meta.env.VITE_API_URL || '/api';
+
 export const getFileUrl = (url) => {
     if (!url) return url;
     if (url.includes('/image/upload/') && url.toLowerCase().endsWith('.pdf')) {
@@ -9,9 +8,6 @@ export const getFileUrl = (url) => {
     return url;
 };
 
-/**
- * Detect PDF by mimeType (reliable) or URL extension (fallback).
- */
 export const isPdf = (url, mimeType) => {
     if (mimeType) return mimeType === 'application/pdf';
     return url?.toLowerCase().includes('.pdf');
@@ -22,12 +18,7 @@ export const isImage = (url, mimeType) => {
     return /\.(jpg|jpeg|png|gif|webp|svg)$/i.test(url || '');
 };
 
-/**
- * Backend proxy URL with JWT token as query param.
- * Iframes cannot send Authorization headers, so we pass the token in the URL.
- * The backend verifies it and streams the file inline.
- */
 export const getProxyUrl = (recordId) => {
     const token = localStorage.getItem('token');
-    return `/api/records/proxy/${recordId}?token=${token}`;
+    return `${API_BASE}/records/proxy/${recordId}?token=${token}`;
 };
