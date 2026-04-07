@@ -1,4 +1,5 @@
-const API_BASE = import.meta.env.VITE_API_URL || '/api';
+const API_BASE = import.meta.env.VITE_API_URL
+    || (import.meta.env.PROD ? 'https://care-sync-xi-peach.vercel.app/api' : '/api');
 
 export const getFileUrl = (url) => {
     if (!url) return url;
